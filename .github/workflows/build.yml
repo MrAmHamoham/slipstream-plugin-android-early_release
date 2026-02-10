@@ -18,11 +18,12 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Setup Android SDK and NDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          api-level: 36
-          ndk-version: 27.2.12479018
+
+      - name: Install NDK 27.2.12479018
+        run: |
+          sdkmanager "ndk;27.2.12479018" "platforms;android-36" "build-tools;36.0.0"
 
       - name: Install Rust and Targets
         run: |
