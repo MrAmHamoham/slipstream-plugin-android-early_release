@@ -18,10 +18,10 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Install dependencies
+      - name: Install build tools (NDK, CMake, Python, make, perl)
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev pkg-config cmake perl
+          sudo apt-get install -y build-essential make perl python3 libssl-dev pkg-config cmake
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -30,22 +30,6 @@ jobs:
         run: |
           sdkmanager "ndk;27.2.12479018" "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Install Rust and Targets
+      - name: Install Rust and Android targets
         run: |
-          rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
-          cargo install cargo-ndk
-
-      - name: Build APK
-        env:
-          OPENSSL_STATIC: 1
-          OPENSSL_DIR: /usr/lib/x86_64-linux-gnu
-          OPENSSL_NO_PKG_CONFIG: 1
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: slipstream-plugin
-          path: app/build/outputs/apk/debug/*.apk
+          rustup target add armv7-linux-androideabi aarch64-
