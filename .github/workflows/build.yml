@@ -22,7 +22,7 @@ jobs:
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r27  # Uses the stable 2026 LTS version
+          ndk-version: r27
           link-to-sdk: true
 
       - name: Install Rust and Targets
@@ -32,8 +32,8 @@ jobs:
 
       - name: Build APK
         env:
-          # Use the path provided by the setup-ndk step automatically
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_SDK_ROOT: ${{ steps.setup-ndk.outputs.sdk-path }}
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
