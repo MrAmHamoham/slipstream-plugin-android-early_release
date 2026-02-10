@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev pkg-config cmake
+          sudo apt-get install -y libssl-dev pkg-config cmake perl
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -36,6 +36,10 @@ jobs:
           cargo install cargo-ndk
 
       - name: Build APK
+        env:
+          OPENSSL_STATIC: 1
+          OPENSSL_DIR: /usr/lib/x86_64-linux-gnu
+          OPENSSL_NO_PKG_CONFIG: 1
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
